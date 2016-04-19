@@ -2,6 +2,7 @@ from nose.tools import assert_equals
 from Crypto.Cipher import AES
 import base64
 import getpass
+import hashlib
 from pkcs12kdf import PKCS12KDF
 
 KEY_MATERIAL = 1
@@ -17,7 +18,7 @@ def test_generate_derived_parameters():
     salt = enc[:16]
     cipher_text = enc[16:]
 
-    kdf = PKCS12KDF(password, salt, iterations, 512, 256, key_size)
+    kdf = PKCS12KDF(password, salt, iterations, "SHA256", key_size)
     (key, iv) = kdf.generate_key_and_iv()
 
     cipher = AES.new(key, AES.MODE_CBC, iv)
